@@ -18,10 +18,10 @@ public class PackageController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ulong> Get()
+    public IEnumerable<string> Get()
     {
         return packageModel.GetAllPackages().Select(package =>
-            package.KolliId);
+            package.KolliId.ToString());
     }
 
     [HttpGet("{kolliId}")]
@@ -46,7 +46,7 @@ public class PackageController : ControllerBase
 
         return Ok(new PackageDTO
         {
-            KolliId = package.KolliId,
+            KolliId = package.KolliId.ToString(),
             Height = package.Height,
             Width = package.Width,
             Length = package.Length,
@@ -64,6 +64,6 @@ public class PackageController : ControllerBase
 
         var kolliId = packageModel.AddPackage(package.Weight, package.Length, package.Height, package.Width);
 
-        return Ok(kolliId);
+        return CreatedAtAction(nameof(GetPackage), new { kolliId }, kolliId.ToString());
     }
 }
