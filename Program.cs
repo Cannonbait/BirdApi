@@ -10,8 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Dependency Injections
-builder.Services.AddScoped<PackageRepository, PackageRepository>();
-builder.Services.AddScoped<PackageModel, PackageModel>();
+builder.Services.AddSingleton<PackageRepository, PackageRepository>();
+builder.Services.AddSingleton<PackageModel, PackageModel>();
 
 
 var app = builder.Build();
