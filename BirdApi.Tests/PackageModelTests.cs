@@ -36,7 +36,8 @@ public class PackageTests
     [Test]
     public void ValidateKolliId()
     {
-        var packageModel = new PackageModel(new PackageRepository());
+        //The PackageRepository should be handled with mocking, but trying to keep scope limited
+        var packageModel = new PackageModel(new PackageRepository()); 
 
         // Incorrect length of Kolli Id
         Assert.That(packageModel.ValidateKolliId(9998887776665554443) == KolliIdValidity.IncorrectLength);
