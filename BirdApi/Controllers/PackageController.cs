@@ -27,22 +27,22 @@ public class PackageController : ControllerBase
     [HttpGet("{kolliId}")]
     public ActionResult<PackageDTO> GetPackage(ulong kolliId)
     {
-        var strKolliId = kolliId.ToString();
+        var kolliIdValidity = packageModel.ValidateKolliId(kolliId);
 
-        if (strKolliId.Length != 18)
+        if (kolliIdValidity == KolliIdValidity.IncorrectLength)
         {
             return BadRequest("The Kolli Id must be exactly 18 digits");
         }
-        else if (!strKolliId.StartsWith("999"))
+        else if (kolliIdValidity == KolliIdValidity.IncorrectStart)
         {
             return BadRequest("The Kolli Id must start with 999");
         }
-
-        var package = packageModel.GetPackage(kolliId);
-        if (package == null)
+        else if (kolliIdValidity == KolliIdValidity.NotFound)
         {
             return NotFound("No package with that Kolli Id exists in the system");
         }
+
+        var package = packageModel.GetPackage(kolliId);
 
         return Ok(new PackageDTO
         {
@@ -50,16 +50,16 @@ public class PackageController : ControllerBase
             Height = package.Height,
             Width = package.Width,
             Length = package.Length,
-            IsValid = packageModel.ValidPackage(package.Weight, package.Length, package.Height, package.Width)
+            IsValid = packageModel.ValidatePackageMeasurements(package.Weight, package.Length, package.Height, package.Width)
         });
     }
 
     [HttpPost]
     public ActionResult<ulong> PostPackage(PackageDTO package)
     {
-        if (!packageModel.ValidPackage(package.Weight, package.Length, package.Height, package.Width))
+        if (!packageModel.ValidatePackageMeasurements(package.Weight, package.Length, package.Height, package.Width))
         {
-            return BadRequest("The package does not conform to one of the limits imposed on packages");
+            return BadRequest("The package does not conform to at least one of the limits imposed on packages (weight: 20 kg, width/height/length: 60 cm)");
         }
 
         var kolliId = packageModel.AddPackage(package.Weight, package.Length, package.Height, package.Width);

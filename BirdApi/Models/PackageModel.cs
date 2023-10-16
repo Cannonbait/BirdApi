@@ -16,13 +16,6 @@ public class PackageModel
         return packageRepository.GetAllPackages();
     }
 
-    public bool ValidPackage(int weight, double length, double height, double width)
-    {
-        return 0 < weight && weight <= 20000 &&
-        0 < length && length <= 60 &&
-        0 < height && height <= 60 &&
-        0 < width && width <= 60;
-    }
 
     public PackageData? GetPackage(ulong kolliId)
     {
@@ -32,6 +25,33 @@ public class PackageModel
     public ulong AddPackage(int weight, double length, double height, double width)
     {
         return packageRepository.AddPackage(weight, length, height, width);
+    }
+
+    public bool ValidatePackageMeasurements(int weight, double length, double height, double width)
+    {
+        return 0 < weight && weight <= 20000 &&
+        0 < length && length <= 60 &&
+        0 < height && height <= 60 &&
+        0 < width && width <= 60;
+    }
+
+    public KolliIdValidity ValidateKolliId(ulong kolliId)
+    {
+        var strKolliId = kolliId.ToString();
+
+        if (strKolliId.Length != 18)
+        {
+            return KolliIdValidity.IncorrectLength;
+        }
+        else if (!strKolliId.StartsWith("999"))
+        {
+            return KolliIdValidity.IncorrectStart;
+        }
+        else if (GetPackage(kolliId) == null)
+        {
+            return KolliIdValidity.NotFound;
+        }
+        return KolliIdValidity.Ok;
     }
 
 
