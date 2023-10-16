@@ -9,7 +9,8 @@ public class PackageRepository
 
     public PackageRepository()
     {
-        packages.Add(new PackageData { KolliId = GenerateNewKolliId(), Height = 10, Length = 10, Weight = 10, Width = 10 });
+        packages.Add(new PackageData { KolliId = GenerateNewKolliId(), Weight = 10, Height = 10, Length = 10, Width = 10 });
+        packages.Add(new PackageData { KolliId = GenerateNewKolliId(), Weight = 10, Height = 65, Length = 10, Width = 10 });
     }
 
     public IEnumerable<PackageData> GetAllPackages()

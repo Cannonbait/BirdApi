@@ -18,7 +18,10 @@ public class PackageModel
 
     public bool ValidPackage(int weight, double length, double height, double width)
     {
-        return weight <= 20000 && length <= 600 && height <= 600 && width <= 600;
+        return 0 < weight && weight <= 20000 &&
+        0 < length && length <= 60 &&
+        0 < height && height <= 60 &&
+        0 < width && width <= 60;
     }
 
     public PackageData? GetPackage(ulong kolliId)

@@ -2,7 +2,7 @@ namespace BirdApi.Models;
 
 
 /**
-    Weight measured in grams, dimensions measured in mm.
+    Weight measured in grams, dimensions measured in cm.
 **/
 public class PackageData
 {
